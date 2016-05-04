@@ -1,21 +1,31 @@
+import random
+
 import matplotlib.pyplot as plt
 import networkx as nx
 
 from louvain import utils
 
 
+def generate_color_map(partition):
+    communities = utils.partition_to_comm_nodes_map(partition).keys()
+    color_map = {}
+    r = lambda: random.randint(0, 255)
+    for comm in communities:
+        color_map[comm] = '#%02X%02X%02X' % (r(), r(), r())
+    return color_map
+
+
 def show_graph_communities(graph, partition, color_map=None):
     if color_map is None:
-        color_map = {0: "red", 1: "green", 2: "blue", 3: "yellow"}
-    count = 0
+        color_map = generate_color_map(partition)
     pos = nx.spring_layout(graph)
-    labels = {l: str(l) for l in graph.nodes()}
     comm_nodes = utils.partition_to_comm_nodes_map(partition)
     for comm, nodes in comm_nodes.items():
-        nx.draw_networkx_nodes(graph, pos, nodes, node_size=200, node_color=color_map[count])
-        count += 1
-    nx.draw_networkx_labels(graph, pos, labels, label_pos=0.3, font_size=16)
-    nx.draw_networkx_edges(graph, pos, alpha=0.5)
+        nx.draw_networkx_nodes(graph, pos, nodelist=nodes, node_size=400,
+                               node_color=color_map.get(comm), label=comm, cmap=plt.cm.jet)
+    nx.draw_networkx_labels(graph, pos, font_size=12)
+    nx.draw_networkx_edges(graph, pos, alpha=0.3)
+    plt.legend()
     plt.axis('off')
     plt.show()
 
