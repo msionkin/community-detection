@@ -15,7 +15,7 @@ def generate_color_map(partition):
     return color_map
 
 
-def show_graph_communities(graph, partition, color_map=None):
+def show_graph_communities(graph, partition, color_map=None, with_labels=False):
     if color_map is None:
         color_map = generate_color_map(partition)
     pos = nx.spring_layout(graph)
@@ -23,7 +23,8 @@ def show_graph_communities(graph, partition, color_map=None):
     for comm, nodes in comm_nodes.items():
         nx.draw_networkx_nodes(graph, pos, nodelist=nodes, node_size=400,
                                node_color=color_map.get(comm), label=comm, cmap=plt.cm.jet)
-    nx.draw_networkx_labels(graph, pos, font_size=12)
+    if with_labels:
+        nx.draw_networkx_labels(graph, pos, font_size=12)
     nx.draw_networkx_edges(graph, pos, alpha=0.3)
     plt.legend()
     plt.axis('off')
