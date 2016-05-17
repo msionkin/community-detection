@@ -31,6 +31,16 @@ def show_graph_communities(graph, partition, color_map=None, with_labels=False):
     plt.show()
 
 
+def show_graph(graph, with_labels=False):
+    pos = nx.spring_layout(graph)
+    nx.draw_networkx_nodes(graph, pos, node_size=200, node_color='red')
+    if with_labels:
+        nx.draw_networkx_labels(graph, pos, font_size=12)
+    nx.draw_networkx_edges(graph, pos, alpha=0.3)
+    plt.axis('off')
+    plt.show()
+
+
 def print_graph_communities(partition):
     comm_nodes = utils.partition_to_comm_nodes_map(partition)
     for comm, nodes in comm_nodes.items():
