@@ -1,11 +1,19 @@
 from graphIO import read_graph as rg
 from graphIO import show_graph as sg
 import louvain
+from vkData import vk_data as vk
 
 
 def main():
     #graph = rg.read_from_file("./data/test.txt")
     graph = rg.read_from_file("./data/karate.txt")
+
+    '''
+    user_id = 1
+    graph = vk.get_friends_to_friends_graph(user_id)
+    vk.get_friends_to_friends_file(user_id, file_path="./data/friends.txt")
+    #graph = rg.read_from_file("./data/friends.txt")
+    '''
 
     print(graph.number_of_edges())
     print(graph.number_of_nodes())
