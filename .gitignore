@@ -1,2 +1,6 @@
-.idea/
+.idea
+.venv
 *.pyc
+*.egg
+*.egg-info
+.tox

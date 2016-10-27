@@ -16,7 +16,7 @@ setup(
         "Development Status :: 1 - Beta",
     ],
 
-    packages=['louvain', 'graphIO', 'data'],
+    packages=['louvain', 'graphIO'],
     install_requires=[
         "networkx", "matplotlib"
     ],

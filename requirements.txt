@@ -1,0 +1,4 @@
+requests>=2.11.1
+networkx>=1.11
+matplotlib>=1.5.3
+python-igraph>=0.7.1
