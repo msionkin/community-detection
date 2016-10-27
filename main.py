@@ -6,8 +6,8 @@ from vkData import vk_data as vk
 
 def main():
     #graph = rg.read_from_file("./data/test.txt")
-    graph = rg.read_from_file("./data/karate.txt")
-
+    graph = rg.read_from_file("./data/several_circles1.txt")
+    #sg.show_graph(graph, with_labels=True)
     '''
     user_id = 1
     graph = vk.get_friends_to_friends_graph(user_id)

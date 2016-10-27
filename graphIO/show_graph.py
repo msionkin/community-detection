@@ -18,7 +18,7 @@ def generate_color_map(partition):
 def show_graph_communities(graph, partition, color_map=None, with_labels=False):
     if color_map is None:
         color_map = generate_color_map(partition)
-    pos = nx.spring_layout(graph)
+    pos = nx.spring_layout(graph,k=0.1,iterations=50)
     comm_nodes = utils.partition_to_comm_nodes_map(partition)
     for comm, nodes in comm_nodes.items():
         nx.draw_networkx_nodes(graph, pos, nodelist=nodes, node_size=400,
@@ -41,7 +41,14 @@ def show_graph(graph, with_labels=False):
     plt.show()
 
 
+def draw_circular_graph(graph):
+    graph = nx.cycle_graph(graph.number_of_nodes(), graph)
+    nx.draw_circular(graph)
+    plt.axis('off')
+    plt.show()
+
+
 def print_graph_communities(partition):
     comm_nodes = utils.partition_to_comm_nodes_map(partition)
     for comm, nodes in comm_nodes.items():
-        print ("{}: {}".format(comm, nodes))
+        print ("{}: {}".format(comm, sorted(nodes, key=lambda x: int(x))))
