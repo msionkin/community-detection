@@ -1,5 +1,6 @@
 from graphIO import read_graph as rg
 from graphIO import show_graph as sg
+import igraph as ig
 import louvain
 from vkData import vk_data as vk
 
@@ -19,8 +20,19 @@ def vk_test():
     sg.show_graph_communities(graph, pa)
 
 
+def infomap_test():
+    graph = rg.read_from_file("./data/two_circles.txt")
+    edges = []
+    for e in graph.edges():
+        edges.append((int(e[0]), int(e[1])))
+    cg = ig.Graph(edges)
+    community = cg.community_infomap()
+    print(community)
+
+
 def main():
-    vk_test()
+    #vk_test()
+    infomap_test()
 
 
 if __name__ == "__main__":
