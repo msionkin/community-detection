@@ -1,5 +1,6 @@
 from graphIO import read_graph as rg
 from graphIO import show_graph as sg
+from graphIO import utils
 import igraph as ig
 import louvain
 from vkData import vk_data as vk
@@ -20,19 +21,58 @@ def vk_test():
     sg.show_graph_communities(graph, pa)
 
 
-def infomap_test():
-    graph = rg.read_from_file("./data/two_circles.txt")
-    edges = []
-    for e in graph.edges():
-        edges.append((int(e[0]), int(e[1])))
-    cg = ig.Graph(edges)
-    community = cg.community_infomap()
-    print(community)
+def infomap_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_infomap()
+    print('Infomap: ', communities, '\n')
+
+
+def walktrap_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_walktrap()
+    print('Walktrap: ', communities, '\n')
+
+
+def eigenvector_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_walktrap()
+    print('Eigen vector: ', communities, '\n')
+
+
+def label_propagation_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_label_propagation()
+    print('Label propagation: ', communities, '\n')
+
+
+def fastgreedy_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_fastgreedy()
+    print('Fastgreedy: ', communities, '\n')
+
+
+def edge_betweenness_test(graph):
+    cg = ig.Graph(utils.get_graph_edges(graph, True))
+    communities = cg.community_edge_betweenness(directed=False)
+    print('Edge betweenness: ', communities, '\n')
+
+
+def louvain_test(graph):
+    pa = louvain.best_partition(graph)
+    print('Louvain:')
+    sg.print_graph_communities(pa)
+    print('\n')
 
 
 def main():
-    #vk_test()
-    infomap_test()
+    graph = rg.read_from_file("./data/karate.txt")
+    infomap_test(graph)
+    louvain_test(graph)
+    walktrap_test(graph)
+    eigenvector_test(graph)
+    label_propagation_test(graph)
+    fastgreedy_test(graph)
+    edge_betweenness_test(graph)
 
 
 if __name__ == "__main__":
