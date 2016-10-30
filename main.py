@@ -35,7 +35,7 @@ def walktrap_test(graph):
 
 def eigenvector_test(graph):
     cg = ig.Graph(utils.get_graph_edges(graph, True))
-    communities = cg.community_walktrap()
+    communities = cg.community_leading_eigenvector()
     print('Eigen vector: ', communities, '\n')
 
 
