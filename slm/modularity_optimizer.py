@@ -1,5 +1,66 @@
+import time
+
+from slm.slm import SmartLocalMoving
+
 
 class ModularityOptimizer(object):
+    def run(self, input_file_path="", output_file_path="",
+            resolution=1.0, n_iterations=10, n_random_starts=10, print_output=False):
+
+        if print_output:
+            print("Reading input file...")
+        network = self.read_input_file(input_file_path)
+
+        if print_output:
+            print("Number of nodes: {}".format(network.n_nodes))
+            print("Number of edges: {}".format(network.get_n_edges()))
+            print("Running smart local moving algorithm...")
+
+        resolution2 = resolution / (2 * network.get_total_edge_weight() + network.total_edge_weight_self_links)
+
+        start_time = time.time()
+        clustering = None
+        max_modularity = float('-inf')
+        for i in range(n_random_starts):
+            if print_output and n_random_starts > 1:
+                print("Random start: {}".format(i + 1))
+
+            smart_local_moving = SmartLocalMoving(network, resolution2)
+
+            j = 0
+            while j < n_iterations:
+                if print_output and n_iterations > 1:
+                    print("Iteration: {}".format(j + 1))
+                smart_local_moving.run_slm()
+                j += 1
+
+                modularity = smart_local_moving.calc_modularity()
+                if print_output and n_iterations > 1:
+                    print("Modularity: {}".format(modularity))
+
+            if modularity > max_modularity:
+                clustering = smart_local_moving.clustering
+                max_modularity = modularity
+
+            if print_output and n_random_starts > 1:
+                if n_iterations == 1:
+                    print("Modularity: {}".format(modularity))
+
+        end_time = time.time()
+
+        if print_output:
+            if n_random_starts == 1:
+                if n_iterations > 1:
+                    print("\n")
+                print("Modularity: {}".format(max_modularity))
+            else:
+                print("Maximum modularity in {} random starts: {}".format(n_random_starts, max_modularity))
+            print("Number of communities: {}".format(clustering.n_cluster))
+            print("Elapsed time: {} seconds".format((end_time - start_time) / 1000.0))
+            print("\n")
+            print("Writing output file...")
+
+        self.write_output_file(output_file_path, clustering)
 
     def read_input_file(self, file_path):
         with open(file_path, 'r') as f:
@@ -17,7 +78,7 @@ class ModularityOptimizer(object):
             node2[j] = int(edge_parts[1])
             if node2[j] > i:
                 i = node2[j]
-            edge_weight1[j] = float(edge_parts[2]) if len(edge_parts)> 2 else 1
+            edge_weight1[j] = float(edge_parts[2]) if len(edge_parts) > 2 else 1
         n_nodes = i + 1
 
         n_neighbors = [0] * n_nodes
