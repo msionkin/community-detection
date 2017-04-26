@@ -1,5 +1,6 @@
 import time
 
+from slm.network import Network
 from slm.slm import SmartLocalMoving
 
 
