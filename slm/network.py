@@ -1,6 +1,77 @@
 
 class Network(object):
 
+    def __init__(self, n_nodes=0, node_weight=None, first_neighbor_index=None, neighbor=None, edge_weight=None):
+        self.n_nodes = n_nodes
+        self.n_edges = 0 if neighbor is None else len(neighbor)
+        self.first_neighbor_index = first_neighbor_index
+        self.neighbor = neighbor
+        if edge_weight is not None:
+            self.edge_weight = edge_weight
+        else:
+            self.edge_weight = [1] * self.n_edges
+        self.total_edge_weight_self_links = 0
+        if node_weight is not None:
+            self.node_weight = node_weight
+        else:
+            self.node_weight = self.get_total_edge_weight_per_node()
+
+    def get_n_edges(self):
+        return self.n_edges / 2
+
+    def get_total_edge_weight_per_node(self):
+        total_edge_weight_per_node = []
+        for i in range(self.n_nodes):
+            total_edge_weight_per_node[i] = sum(
+                self.edge_weight[self.first_neighbor_index[i]:self.first_neighbor_index[i + 1]])
+        return total_edge_weight_per_node
+
+    def get_n_edges_per_node(self):
+        n_edges_per_node = []
+        for i in range(self.n_nodes):
+            n_edges_per_node[i] = self.first_neighbor_index[i + 1] - self.first_neighbor_index[i]
+        return n_edges_per_node
+
+    def get_total_edge_weight(self):
+        return sum(self.edge_weight) / 2
+
+    def create_subnetwork(self, clustering, cluster, node,
+                          subnetwork_node, subnetwork_neighbor, subnetwork_edge_weight):
+        subnetwork = Network()
+        subnetwork.n_nodes = len(node)
+
+        if subnetwork.n_nodes == 1:
+            subnetwork.n_edges = 0
+            subnetwork.node_weight = [self.node_weight[node[0]]]
+            subnetwork.first_neighbor_index = []
+            subnetwork.neighbor = []
+            subnetwork.edge_weight = []
+        else:
+            for i in range(len(node)):
+                subnetwork_node[node[i]] = i
+
+            subnetwork.n_edges = 0
+            subnetwork.node_weight = [0] * subnetwork.n_nodes
+            subnetwork.first_neighbor_index = [0] * (subnetwork.n_nodes + 1)
+            for i in range(subnetwork.n_nodes):
+                j = node[i]
+                subnetwork.node_weight[i] = self.node_weight[j]
+                for k in range(self.first_neighbor_index[j], self.first_neighbor_index[j + 1]):
+                    if clustering.cluster[self.neighbor[k]] == cluster:
+                        subnetwork_neighbor[subnetwork.n_edges] = subnetwork_node[self.neighbor[k]]
+                        subnetwork_edge_weight[subnetwork.n_edges] = self.edge_weight[k]
+                        subnetwork.n_edges += 1
+                subnetwork.first_neighbor_index[i + 1] = subnetwork.n_edges
+            subnetwork.neighbor = subnetwork_neighbor[0:subnetwork.n_edges]
+            subnetwork.edge_weight = subnetwork_edge_weight[0:subnetwork.n_edges]
+
+        subnetwork.total_edge_weight_self_links = 0
+
+        return subnetwork
+
+    def create_subnetworks(self, clustering):
+        pass
+
     def create_reduced_network(self, clustering):
 
         reduced_network = Network()
