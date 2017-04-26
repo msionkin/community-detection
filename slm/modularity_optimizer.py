@@ -31,7 +31,7 @@ class ModularityOptimizer(object):
             while j < n_iterations:
                 if print_output and n_iterations > 1:
                     print("Iteration: {}".format(j + 1))
-                smart_local_moving.run_slm()
+                smart_local_moving.run_smart_local_moving()
                 j += 1
 
                 modularity = smart_local_moving.calc_modularity()
