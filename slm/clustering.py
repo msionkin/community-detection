@@ -22,14 +22,10 @@ class Clustering:
         return self.clusters[node]
 
     def init_singleton_clusters(self):
-        for i in range(self.n_nodes):
-            self.clusters[i] = i
+        self.clusters = [i for i in range(self.n_nodes)]
         self.n_clusters = self.n_nodes
-
-    def sort_clusters_by_n_nodes(self):
-        sorted(self.clusters, key=lambda nodes: len(nodes))
 
     def merge_clusters(self, clustering):
         for i in range(self.n_nodes):
-            self.clusters[i] = clustering.cluster[self.clusters[i]]
+            self.clusters[i] = clustering.clusters[self.clusters[i]]
         self.n_clusters = clustering.n_clusters

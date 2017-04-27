@@ -21,10 +21,10 @@ class SmartLocalMoving(object):
         modularity += self.network.total_edge_weight_self_links
         cluster_weight = [0] * self.clustering.n_clusters
         for i in range(self.network.n_nodes):
-            cluster_weight[self.clustering.clusters[i]] += self.network.nodeWeight[i]
+            cluster_weight[self.clustering.clusters[i]] += self.network.node_weight[i]
         for i in range(self.clustering.n_clusters):
             modularity -= cluster_weight[i] * cluster_weight[i] * self.resolution
-            modularity /= 2 * self.network.get_total_edge_weight() + self.network.total_edge_weight_self_links
+        modularity /= 2.0 * self.network.get_total_edge_weight() + self.network.total_edge_weight_self_links
         return modularity
 
     def _run_local_moving_algorithm(self):
@@ -44,7 +44,8 @@ class SmartLocalMoving(object):
                 unused_cluster[n_unused_clusters] = i
                 n_unused_clusters += 1
 
-        node_permutation = random.shuffle([x for x in range(self.network.n_nodes)])
+        node_permutation = [x for x in range(self.network.n_nodes)]
+        random.shuffle(node_permutation)
 
         edge_weight_per_cluster = [0] * self.network.n_nodes
         neighboring_cluster = [0] * (self.network.n_nodes - 1)

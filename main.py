@@ -3,6 +3,7 @@ from graphIO import show_graph as sg
 from graphIO import utils
 import igraph as ig
 import louvain
+from slm.modularity_optimizer import ModularityOptimizer
 from vkData import vk_data as vk
 
 
@@ -98,6 +99,8 @@ def main():
     print("KARATE:")
     graph = rg.read_from_file("./data/karate.txt")
     run_all_tests(graph)
+
+    # ModularityOptimizer.run("./data/karate.txt", "./data/output.txt", print_output=True)
 
 
 if __name__ == "__main__":

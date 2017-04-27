@@ -5,12 +5,13 @@ from slm.slm import SmartLocalMoving
 
 
 class ModularityOptimizer(object):
-    def run(self, input_file_path="", output_file_path="",
+    @staticmethod
+    def run(input_file_path="", output_file_path="",
             resolution=1.0, n_iterations=10, n_random_starts=10, print_output=False):
 
         if print_output:
             print("Reading input file...")
-        network = self.read_input_file(input_file_path)
+        network = ModularityOptimizer.read_input_file(input_file_path)
 
         if print_output:
             print("Number of nodes: {}".format(network.n_nodes))
@@ -56,14 +57,15 @@ class ModularityOptimizer(object):
                 print("Modularity: {}".format(max_modularity))
             else:
                 print("Maximum modularity in {} random starts: {}".format(n_random_starts, max_modularity))
-            print("Number of communities: {}".format(clustering.n_cluster))
+            print("Number of communities: {}".format(clustering.n_clusters))
             print("Elapsed time: {} seconds".format((end_time - start_time) / 1000.0))
             print("\n")
             print("Writing output file...")
 
-        self.write_output_file(output_file_path, clustering)
+        ModularityOptimizer.write_output_file(output_file_path, clustering)
 
-    def read_input_file(self, file_path):
+    @staticmethod
+    def read_input_file(file_path):
         with open(file_path, 'r') as f:
             content = f.readlines()
         n_lines = len(content)
@@ -109,12 +111,11 @@ class ModularityOptimizer(object):
                 neighbor[j] = node1[i]
                 edge_weight2[j] = edge_weight1[i]
                 n_neighbors[node2[i]] += 1
-        return Network(n_nodes, first_neighbor_index, neighbor, edge_weight2)
+        return Network(n_nodes, None, first_neighbor_index, neighbor, edge_weight2)
 
-    def write_output_file(self, file_path, clustering):
+    @staticmethod
+    def write_output_file(file_path, clustering):
         n_nodes = clustering.n_nodes
-        clustering.sort_clusters_by_n_nodes()
-
         with open(file_path, 'w') as f:
             for i in range(n_nodes):
                 f.write(str(clustering.get_cluster(i)) + "\n")
