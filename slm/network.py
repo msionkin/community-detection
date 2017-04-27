@@ -20,14 +20,14 @@ class Network(object):
         return self.n_edges / 2
 
     def get_total_edge_weight_per_node(self):
-        total_edge_weight_per_node = []
+        total_edge_weight_per_node = [0] * self.n_nodes
         for i in range(self.n_nodes):
             total_edge_weight_per_node[i] = sum(
                 self.edge_weight[self.first_neighbor_index[i]:self.first_neighbor_index[i + 1]])
         return total_edge_weight_per_node
 
     def get_n_edges_per_node(self):
-        n_edges_per_node = []
+        n_edges_per_node = [0] * self.n_nodes
         for i in range(self.n_nodes):
             n_edges_per_node[i] = self.first_neighbor_index[i + 1] - self.first_neighbor_index[i]
         return n_edges_per_node
@@ -57,7 +57,7 @@ class Network(object):
                 j = node[i]
                 subnetwork.node_weight[i] = self.node_weight[j]
                 for k in range(self.first_neighbor_index[j], self.first_neighbor_index[j + 1]):
-                    if clustering.cluster[self.neighbor[k]] == cluster:
+                    if clustering.clusters[self.neighbor[k]] == cluster:
                         subnetwork_neighbor[subnetwork.n_edges] = subnetwork_node[self.neighbor[k]]
                         subnetwork_edge_weight[subnetwork.n_edges] = self.edge_weight[k]
                         subnetwork.n_edges += 1
@@ -70,7 +70,15 @@ class Network(object):
         return subnetwork
 
     def create_subnetworks(self, clustering):
-        pass
+        subnetworks = [None] * clustering.n_clusters
+        node_per_cluster = clustering.get_nodes_per_cluster()
+        subnetwork_node = [0] * self.n_nodes
+        subnetwork_neighbor = [0] * self.n_edges
+        subnetwork_edge_weight = [0] * self.n_edges
+        for i in range(clustering.n_clusters):
+            subnetworks[i] = self.create_subnetwork(clustering, i, node_per_cluster[i],
+                                                    subnetwork_node, subnetwork_neighbor, subnetwork_edge_weight)
+        return subnetworks
 
     def create_reduced_network(self, clustering):
 
