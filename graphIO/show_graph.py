@@ -51,4 +51,12 @@ def draw_circular_graph(graph):
 def print_graph_communities(partition):
     comm_nodes = utils.partition_to_comm_nodes_map(partition)
     for comm, nodes in comm_nodes.items():
-        print ("{}: {}".format(comm, sorted(nodes, key=lambda x: int(x))))
+        print("{}: {}".format(comm, sorted(nodes, key=lambda x: int(x))))
+
+
+def write_graph_communities(partition, file_path):
+    comm_nodes = utils.partition_to_comm_nodes_map(partition)
+    with open(file_path, 'w') as f:
+        for comm, nodes in comm_nodes.items():
+            f.write("{}: {}\n".format(comm, sorted(nodes, key=lambda x: int(x))))
+        f.flush()

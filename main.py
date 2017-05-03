@@ -76,6 +76,7 @@ def louvain_test(graph):
     print('Louvain modularity: ', modular)
     print('Louvain:')
     sg.print_graph_communities(pa)
+    # sg.write_graph_communities(pa, "./data/output_louvain.txt")
     print('\n')
 
 
@@ -100,7 +101,7 @@ def main():
     graph = rg.read_from_file("./data/karate.txt")
     run_all_tests(graph)
 
-    # ModularityOptimizer.run("./data/karate.txt", "./data/output.txt", print_output=True)
+    # ModularityOptimizer.run("./data/karate.txt", "./data/output_slm.txt", print_output=True)
 
 
 if __name__ == "__main__":

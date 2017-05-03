@@ -1,4 +1,5 @@
 import time
+from collections import defaultdict
 
 from slm.network import Network
 from slm.slm import SmartLocalMoving
@@ -62,7 +63,8 @@ class ModularityOptimizer(object):
             print("\n")
             print("Writing output file...")
 
-        ModularityOptimizer.write_output_file(output_file_path, clustering)
+        # ModularityOptimizer.write_output_file(output_file_path, clustering)
+        ModularityOptimizer.write_graph_communities(clustering, output_file_path)
 
     @staticmethod
     def read_input_file(file_path):
@@ -119,4 +121,27 @@ class ModularityOptimizer(object):
         with open(file_path, 'w') as f:
             for i in range(n_nodes):
                 f.write(str(clustering.get_cluster(i)) + "\n")
+            f.flush()
+
+    @staticmethod
+    def partition_to_comm_nodes_map(clustering):
+        comm_nodes = defaultdict(list)
+        for i in range(clustering.n_nodes):
+            comm_nodes[clustering.get_cluster(i)].append(i)
+        return comm_nodes
+
+    @staticmethod
+    def comm_nodes_map_from_file(input_file):
+        comm_nodes = defaultdict(list)
+        with open(input_file, 'r') as f:
+            for i, line in enumerate(f):
+                comm_nodes[int(line)].append(i)
+        return comm_nodes
+
+    @staticmethod
+    def write_graph_communities(partition, file_path):
+        comm_nodes = ModularityOptimizer.partition_to_comm_nodes_map(partition)
+        with open(file_path, 'w') as f:
+            for comm, nodes in comm_nodes.items():
+                f.write("{}: {}\n".format(comm, sorted(nodes, key=lambda x: int(x))))
             f.flush()
