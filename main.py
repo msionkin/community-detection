@@ -126,7 +126,7 @@ def louvain_test(graph):
     modular = louvain.modularity(pa, graph)
     print('Louvain modularity: ', modular)
     # sg.print_graph_communities(pa)
-    sg.write_graph_communities(pa, "./data/vk_louvain.txt")
+    sg.write_graph_communities(pa, "./data/vk_louvain_source.txt")
     print('\n')
 
 
@@ -163,6 +163,14 @@ def main():
     # translate_nodes_to_source("./data/vk_eigenvector.txt", "./data/friends_my_without_single_map.txt", "./data/vk_eigenvector_source.txt")
 
     # df = corr_matr()
+
+    # from vkData.vk_data import get_users_info
+    # from utils import get_nodes_from_edges_file
+    # from vkData.vk_data import get_users_names_map
+    # from vkData.vk_data import id_to_names
+    # vk_users_info = get_users_info(get_nodes_from_edges_file("./data/friends_my_without_single.txt"))
+    # id_name_map = get_users_names_map(vk_users_info)
+    # id_to_names("./results/vk_louvain_source.txt", id_name_map)
 
 
 if __name__ == "__main__":

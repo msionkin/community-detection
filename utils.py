@@ -109,3 +109,13 @@ def remove_multiple_edges(inf, ouf):
         for e1, e2 in sorted(edges, key=lambda tup: tup[0]):
             fw.write("{}\t{}\n".format(e1, e2))
         fw.flush()
+
+
+def get_nodes_from_edges_file(file_path):
+    nodes = set()
+    with open(file_path, 'r') as f:
+        for line in f:
+            edge_parts = list(map(str.strip, line.split()))
+            nodes.add(edge_parts[0])
+            nodes.add(edge_parts[1])
+    return list(nodes)

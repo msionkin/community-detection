@@ -3,6 +3,7 @@ import time
 import networkx
 from vk.exceptions import VkAPIError
 
+from metrics.utils import comms_from_file
 from vkData.vk_api import vkapi
 
 
@@ -76,3 +77,34 @@ def get_friends_to_friends_file(user_id, file_path):
     with open(file_path, 'w') as f:
         for fr1, fr2 in edges:
             f.write("{}\t{}\n".format(fr1, fr2))
+
+
+def get_users_info(users_ids_list):
+    users_ids = ",".join(users_ids_list)
+    try:
+        return vkapi.users.get(user_ids=users_ids)
+    except VkAPIError as e:
+        print(e)  # TODO: add logging
+        return []
+
+
+def get_users_names_map(vk_users_info):
+    res = {}
+    for user_info in vk_users_info:
+        res[user_info.get('id')] = "{}_{}".format(user_info.get('last_name'), user_info.get('first_name'))
+    return res
+
+
+def write_users_names_to_file(users_names, output_file):
+    with open(output_file, 'w') as f:
+        for user_info in users_names:
+            f.write("{}\t{}_{}\n".format(user_info.get('id'), user_info.get('last_name'), user_info.get('first_name')))
+        f.flush()
+
+
+def id_to_names(input_file, id_name_map):
+    output_file = input_file.replace('.txt', '_names.txt')
+    comms = comms_from_file(input_file)
+    with open(output_file, 'w') as fw:
+        for comm, nodes in comms.items():
+            fw.write("{}\t{}\n".format(comm, ", ".join([id_name_map[n] for n in nodes])))
