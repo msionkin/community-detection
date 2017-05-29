@@ -150,8 +150,17 @@ def main():
 
     # ModularityOptimizer.run("./data/friends_my_without_single_zero_start_for_slm.txt", "./data/vk_slm.txt", print_output=True)
 
+    # from utils import remove_unused_nodes
+    # remove_unused_nodes("./data/com_lj_all_cmty_zero_start.txt", "./data/com_lj_ungraph_zero_start.txt")
+
     # vk_test()
 
+    # from utils import translate_nodes
+    # translate_nodes()
+
+    # from utils import translate_nodes_to_source
+    # translate_nodes_to_source("./data/vk_edge_betweenness.txt", "./data/friends_my_without_single_map.txt", "./data/vk_edge_betweenness_source.txt")
+    # translate_nodes_to_source("./data/vk_eigenvector.txt", "./data/friends_my_without_single_map.txt", "./data/vk_eigenvector_source.txt")
 
 
 
