@@ -162,6 +162,7 @@ def main():
     # translate_nodes_to_source("./data/vk_edge_betweenness.txt", "./data/friends_my_without_single_map.txt", "./data/vk_edge_betweenness_source.txt")
     # translate_nodes_to_source("./data/vk_eigenvector.txt", "./data/friends_my_without_single_map.txt", "./data/vk_eigenvector_source.txt")
 
+    # df = corr_matr()
 
 
 if __name__ == "__main__":
