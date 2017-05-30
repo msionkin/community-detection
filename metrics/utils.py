@@ -1,3 +1,4 @@
+from collections import defaultdict
 from itertools import chain
 
 
@@ -60,3 +61,20 @@ def comms_from_file_fast_greedy(file_path):
         result[cur_comm] = cur_nodes
     del result[-1]
     return result
+
+
+def comms_array_to_dict(comms_array):
+    res = defaultdict(list)
+    for node, comm in enumerate(comms_array):
+        res[comm].append(node)
+    return res
+
+
+def comms_dict_to_file(comms_dict, output_file):
+    """
+    writes {12: 1,3,4} to "12: 1,3,4" to file
+    """
+    with open(output_file, 'w') as f:
+        for comm, nodes in comms_dict.items():
+            f.write("{}:\t{}\n".format(comm, ",".join(map(str, nodes))))
+        f.flush()

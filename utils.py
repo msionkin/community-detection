@@ -34,8 +34,8 @@ def remove_unused_nodes(all_comms_file, all_nodes_file):
         out_f.flush()
 
 
-def translate_nodes():
-    in_file_path = "./data/friends_my_without_single.txt"
+def translate_nodes(in_file_path):
+    #in_file_path = "./data/friends_my_without_single.txt"
     basename = path.splitext(in_file_path)[0]
     ext = path.splitext(in_file_path)[1]
 
@@ -81,6 +81,14 @@ def _get_nodes_map(map_file):
 
 
 def translate_nodes_to_source(input_file, map_file, output_file):
+    """
+    Translates nodes to their source representation
+
+    :param input_file: 12: 1,3,4 
+    :param map_file: 3646 1\n677 3\n8787 4
+    :param output_file: 12: 3646,677,8787
+    :return: None
+    """
     nm = _get_nodes_map(map_file)
     with open(input_file, 'r') as fr, open(output_file, 'w') as fw:
         for line in fr:

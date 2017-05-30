@@ -96,7 +96,7 @@ def get_users_names_map(vk_users_info):
 
 
 def write_users_names_to_file(users_names, output_file):
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w',  encoding='utf-8') as f:
         for user_info in users_names:
             f.write("{}\t{}_{}\n".format(user_info.get('id'), user_info.get('last_name'), user_info.get('first_name')))
         f.flush()
@@ -105,6 +105,6 @@ def write_users_names_to_file(users_names, output_file):
 def id_to_names(input_file, id_name_map):
     output_file = input_file.replace('.txt', '_names.txt')
     comms = comms_from_file(input_file)
-    with open(output_file, 'w') as fw:
+    with open(output_file, 'w', encoding='utf-8') as fw:
         for comm, nodes in comms.items():
             fw.write("{}\t{}\n".format(comm, ", ".join([id_name_map[n] for n in nodes])))
