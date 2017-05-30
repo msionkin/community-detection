@@ -148,29 +148,11 @@ def main():
     run_all_tests(igraph_graph)
     louvain_test(nx_graph)
 
-    # ModularityOptimizer.run("./data/friends_my_without_single_zero_start_for_slm.txt", "./data/vk_slm.txt", print_output=True)
-
-    # from utils import remove_unused_nodes
-    # remove_unused_nodes("./data/com_lj_all_cmty_zero_start.txt", "./data/com_lj_ungraph_zero_start.txt")
+    # ModularityOptimizer.run("./data/friends_my_without_single_zero_start_for_slm.txt",
+    #                         "./data/vk_slm.txt",
+    #                         print_output=True)
 
     # vk_test()
-
-    # from utils import translate_nodes
-    # translate_nodes()
-
-    # from utils import translate_nodes_to_source
-    # translate_nodes_to_source("./data/vk_edge_betweenness.txt", "./data/friends_my_without_single_map.txt", "./data/vk_edge_betweenness_source.txt")
-    # translate_nodes_to_source("./data/vk_eigenvector.txt", "./data/friends_my_without_single_map.txt", "./data/vk_eigenvector_source.txt")
-
-    # df = corr_matr()
-
-    # from vkData.vk_data import get_users_info
-    # from utils import get_nodes_from_edges_file
-    # from vkData.vk_data import get_users_names_map
-    # from vkData.vk_data import id_to_names
-    # vk_users_info = get_users_info(get_nodes_from_edges_file("./data/friends_my_without_single.txt"))
-    # id_name_map = get_users_names_map(vk_users_info)
-    # id_to_names("./results/vk_louvain_source.txt", id_name_map)
 
 
 if __name__ == "__main__":
